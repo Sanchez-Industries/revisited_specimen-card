@@ -27,13 +27,15 @@ class specimen(object):
 			f.write(",".join(kk)+"\n")
 		f.close()
 
-	def  __init__(self,seed=0):
+	def  __init__(self,seed=0,reset=False):
         self.seed = seed
         self.card = {}
         self.sizecode = 5
         self.cols = ["A","B","C","D","E","F","G","H"]
         self.rows = ["1","2","3","4","5","6","7","8"]
         self.caracts = "AZERTYUIOPQSDFGHJKLMWXCVBN0123456789"
+        if reset:
+            self.load_reset_keyfile()
         
     def load_reset_keyfile(self):
         system("echo $(cat {filepath}.priv | base64) > {filepath_}.priv".format(
@@ -93,12 +95,12 @@ class specimenation(object):
 		pass
 		
 	def generate_reset_key():	
-		specard = specimen()
+		specard = specimen(reset=True)
 		specard.generate_crypto_key_file()
 
 	def generate_key_and_card(card_name):
 		specard = specimen()
-		specard.generate_crypto_key_file("bases/"+card_name+".key",size=4000000)
+		specard.generate_crypto_key_file("bases/"+card_name+".key",size=4096)
 		specard.set_key("bases/"+card_name+".key")
 		specard.generate_card("bases/"+card_name+".txt")
 
